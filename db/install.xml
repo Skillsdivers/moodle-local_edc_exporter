@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Initial database schema for the local_edc_exporter plugin.
+  Moodle reads this file during installation to create the credential tracking
+  tables. Comments describe each group without changing the XMLDB structure
+  interpreted by the installer.
+-->
+<XMLDB PATH="local/edc_exporter/db" VERSION="2026042701" COMMENT="XMLDB file for local_edc_exporter"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd">
+  <TABLES>
+    <!-- One record represents one EDC credential for one user and one course. -->
+    <TABLE NAME="local_edcexport_cred" COMMENT="EDC exporter tracking records">
+      <FIELDS>
+        <!-- Internal auto-increment identifier used by plugin pages. -->
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <!-- Moodle user who receives the credential. -->
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <!-- Moodle course completed by the user. -->
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <!-- course_completions record that triggered or justified generation. -->
+        <FIELD NAME="completionid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Stable UUID included in JSON-LD and used to name files. -->
+        <FIELD NAME="credentialid" TYPE="char" LENGTH="36" NOTNULL="true" SEQUENCE="false"/>
+        <!-- Functional status: pending, processing, generated, error or historical states. -->
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="pending" SEQUENCE="false"/>
+        <!-- Internal JSON with Moodle traceability; not intended for external download. -->
+        <FIELD NAME="internal_json" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Exportable JSON-LD for EDCI Issuer. -->
+        <FIELD NAME="export_json" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Relative path under moodledata/local_edc_exporter/credentials for the internal JSON. -->
+        <FIELD NAME="internal_json_path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Relative path under moodledata/local_edc_exporter/credentials for the exportable JSON. -->
+        <FIELD NAME="export_json_path" TYPE="char" LENGTH="255" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Unix time when the credential was successfully issued. -->
+        <FIELD NAME="issuedat" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Optional Unix time when the credential expires. -->
+        <FIELD NAME="expiresat" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Unix time when the credential was revoked. -->
+        <FIELD NAME="revokedat" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Moodle user who revoked the credential. -->
+        <FIELD NAME="revokedby" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Short revocation reason entered by the manager. -->
+        <FIELD NAME="revocationreason" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Secure public token used to verify the credential without exposing internal IDs. -->
+        <FIELD NAME="verificationtoken" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Credential version number. Incremented on regeneration. -->
+        <FIELD NAME="version" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="1" SEQUENCE="false"/>
+        <!-- Last user who created, regenerated or modified the credential. -->
+        <FIELD NAME="usermodified" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+        <!-- SHA-256 hash of export_json for audit and integrity checks. -->
+        <FIELD NAME="payloadhash" TYPE="char" LENGTH="64" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Validation errors serialized as JSON when the payload is invalid. -->
+        <FIELD NAME="validationerrors" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Summary message visible to managers when generation fails. -->
+        <FIELD NAME="errormessage" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+        <!-- Unix timestamp when the record was created. -->
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+        <!-- Unix timestamp when the record was last modified. -->
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+      <KEYS>
+        <!-- Internal primary key. -->
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <!-- Relationships with Moodle core tables to keep referential integrity. -->
+        <KEY NAME="userid_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="courseid_fk" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="revokedby_fk" TYPE="foreign" FIELDS="revokedby" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="usermodified_fk" TYPE="foreign" FIELDS="usermodified" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <!-- Ensures a single active tracking credential per user and course. -->
+        <INDEX NAME="usercourse_uix" UNIQUE="true" FIELDS="userid,courseid"/>
+        <!-- Prevents duplicate UUIDs across credentials. -->
+        <INDEX NAME="credentialid_uix" UNIQUE="true" FIELDS="credentialid"/>
+        <!-- Prevents duplicate verification tokens. -->
+        <INDEX NAME="verificationtoken_uix" UNIQUE="true" FIELDS="verificationtoken"/>
+        <!-- Speeds up lists and filters by status. -->
+        <INDEX NAME="status_ix" UNIQUE="false" FIELDS="status"/>
+        <!-- Speeds up lookups by user. -->
+        <INDEX NAME="userid_ix" UNIQUE="false" FIELDS="userid"/>
+        <!-- Speeds up lookups by course. -->
+        <INDEX NAME="courseid_ix" UNIQUE="false" FIELDS="courseid"/>
+      </INDEXES>
+    </TABLE>
+    
+    <!-- Minimal audit log for important credential actions. -->
+    <TABLE NAME="local_edcexport_log" COMMENT="EDC exporter audit log">
+      <FIELDS>
+        <!-- Internal auto-increment identifier for the audit record. -->
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+
+        <!-- Internal credential ID in local_edcexport_cred.id. -->
+        <FIELD NAME="credentialid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+
+        <!-- User who owns the credential. -->
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+
+        <!-- Course related to the credential. -->
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+
+        <!-- User who performs the action. It can be empty during public verification. -->
+        <FIELD NAME="actorid" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false"/>
+
+        <!-- Recorded action: issued, regenerated, downloaded, viewed, revoked, verified or error. -->
+        <FIELD NAME="action" TYPE="char" LENGTH="30" NOTNULL="true" SEQUENCE="false"/>
+
+        <!-- Minimal details. Do not store full JSON or unnecessary personal data. -->
+        <FIELD NAME="details" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
+
+        <!-- Unix time when the action was recorded. -->
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false"/>
+      </FIELDS>
+
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="credentialid_fk" TYPE="foreign" FIELDS="credentialid" REFTABLE="local_edcexport_cred" REFFIELDS="id"/>
+        <KEY NAME="userid_fk" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="courseid_fk" TYPE="foreign" FIELDS="courseid" REFTABLE="course" REFFIELDS="id"/>
+        <KEY NAME="actorid_fk" TYPE="foreign" FIELDS="actorid" REFTABLE="user" REFFIELDS="id"/>
+      </KEYS>
+
+      <INDEXES>
+        <INDEX NAME="action_ix" UNIQUE="false" FIELDS="action"/>
+        <INDEX NAME="timecreated_ix" UNIQUE="false" FIELDS="timecreated"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>

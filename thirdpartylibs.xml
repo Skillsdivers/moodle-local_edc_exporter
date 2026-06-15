@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<libraries>
+  <library>
+    <location>fonts</location>
+    <name>Liberation Fonts</name>
+    <description>TrueType fonts used to render generated credential cover images.</description>
+    <version>Not specified in bundled font files</version>
+    <license>SIL Open Font License</license>
+    <licenseversion>1.1</licenseversion>
+  </library>
+</libraries>

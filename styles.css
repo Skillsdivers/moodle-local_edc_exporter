@@ -1,0 +1,1088 @@
+/* Main wrapper for the credential list inside the Moodle page. */
+.edc-wrapper {
+    padding: 32px;
+}
+
+/* Visible plugin title in index.php. */
+.edc-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #111;
+    margin-bottom: 8px;
+}
+
+/* Secondary text with the course name. */
+.edc-subtitle {
+    color: #555;
+    margin-bottom: 28px;
+}
+
+/* Notice shown when required custom metadata is missing for JSON-LD generation. */
+.edc-metadata-warning {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    background: #fff8e1;
+    border-left: 4px solid #f0ad4e;
+    border-radius: 4px;
+    font-size: 13px;
+}
+
+/* Toolbar that contains the generate pending credentials action. */
+.edc-toolbar {
+    margin-bottom: 24px;
+}
+
+/* Table of generated or failed credentials for a course. */
+.edc-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    overflow: hidden;
+}
+
+.edc-table th {
+    background: #f5f5f5;
+    color: #111;
+    font-weight: 700;
+    padding: 14px;
+    border-bottom: 3px solid #b8c400;
+}
+
+.edc-table td {
+    padding: 14px;
+    border-bottom: 1px solid #e6e6e6;
+    vertical-align: middle;
+}
+
+.edc-table td:last-child {
+    text-align: right;
+}
+
+.edc-status {
+    /* Compact label that keeps the status easy to scan in the list. */
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+/* Successfully generated status. */
+.edc-status-generated {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+/* Generation or validation error status. */
+.edc-status-error {
+    background: #fdecea;
+    color: #b71c1c;
+}
+
+.edc-status-revoked {
+    background: #f3e5f5;
+    color: #6a1b9a;
+}
+
+/* Intermediate or unknown status that is not generated/error yet. */
+.edc-status-processing {
+    background: #fff8e1;
+    color: #8a6d00;
+}
+
+/* Shared base style for list action links. */
+.edc-btn {
+    padding: 6px 10px;
+    font-size: 13px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-block;
+}
+
+
+.edc-actions {
+    /* Keeps one credential's links together in the actions column. */
+    text-align: right;
+    white-space: nowrap;
+}
+
+.edc-actions a {
+    margin-left: 12px;
+}
+
+.edc-actions a:first-child {
+    margin-left: 0;
+}
+
+.edc-error-detail {
+    padding: 0 14px 16px;
+}
+
+.edc-error-box {
+    /* Technical error detail box visible only to roles allowed to regenerate. */
+    font-size: 13px;
+    color: #8a1f11;
+    background: #fff4f2;
+    padding: 10px 12px;
+    border-left: 3px solid #d93025;
+    border-radius: 4px;
+}
+
+/* Wrapper for one credential's visual view. */
+.edc-view {
+    max-width: 760px;
+    margin: 24px auto;
+    font-family: Inter, Arial, sans-serif;
+}
+
+/* Visual card; it does not replace the official downloadable JSON. */
+.edc-card {
+    background: #fff;
+    padding: 28px 32px;
+}
+
+.edc-kicker {
+    color: #555;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .8px;
+    margin-bottom: 8px;
+}
+
+.edc-view-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: #111;
+    margin: 0 0 28px;
+}
+
+.edc-label {
+    color: #666;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.edc-name {
+    color: #111;
+    font-size: 24px;
+    font-weight: 600;
+    margin: 0 0 22px;
+}
+
+.edc-course {
+    font-size: 20px;
+    font-weight: 600;
+    color: #222;
+    margin: 0 0 26px;
+}
+
+.edc-meta {
+    /* Technical data grid: status, issue time, course and UUID. */
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.edc-meta-item {
+    background: #f7f7f7;
+    padding: 12px 14px;
+    border-radius: 8px;
+}
+
+.edc-meta-title {
+    font-size: 12px;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.edc-meta-value {
+    font-size: 14px;
+    color: #111;
+    word-break: break-word;
+}
+
+.edc-view-actions {
+    margin-top: 24px;
+}
+
+.edc-download {
+    /* Navigation and download links inside view.php. */
+    display: inline-block;
+    color: #006eb6 !important;
+    background: transparent;
+    padding: 0;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.edc-download:hover {
+    color: #004f82 !important;
+}
+
+.edc-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0 0 22px;
+    border-bottom: 1px solid #dfe4e1;
+}
+
+.edc-nav-link {
+    display: inline-block;
+    padding: 10px 12px;
+    color: #3d4944;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 3px solid transparent;
+}
+
+.edc-nav-link:hover {
+    color: #0A4733;
+    text-decoration: none;
+}
+
+.edc-nav-active {
+    color: #0A4733;
+    border-bottom-color: #0A4733;
+}
+
+/* ------------------------------------------------------------------
+   Setup assistant and operational dashboard
+-------------------------------------------------------------------*/
+
+.edc-dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 12px;
+    margin: 18px 0 20px;
+}
+
+.edc-dashboard .edc-stat,
+.edc-stat {
+    background: #fff;
+    border: 1px solid #dfe4e1;
+    border-radius: 8px;
+    padding: 14px 16px;
+}
+
+.edc-stat-value {
+    display: block;
+    font-size: 24px;
+    line-height: 1.1;
+    font-weight: 700;
+    color: #0A4733;
+}
+
+.edc-stat-label {
+    display: block;
+    margin-top: 4px;
+    font-size: 12px;
+    color: #5f6b66;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.edc-setup-panel {
+    background: #fff;
+    border: 1px solid #dfe4e1;
+    border-radius: 8px;
+    padding: 18px;
+    margin: 18px 0 24px;
+}
+
+.edc-setup-ready {
+    border-left: 4px solid #2e7d32;
+}
+
+.edc-setup-blocked {
+    border-left: 4px solid #f0ad4e;
+}
+
+.edc-setup-panel-header,
+.edc-page-header,
+.edc-admin-panel-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.edc-setup-panel-copy h3,
+.edc-setup-nextsteps h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.edc-setup-panel-copy p {
+    margin: 0;
+    color: #5f6b66;
+}
+
+.edc-checklist {
+    display: grid;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.edc-check-item {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: #f8faf9;
+    border: 1px solid #e3e8e5;
+    border-radius: 8px;
+}
+
+.edc-check-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex: 0 0 32px;
+}
+
+.edc-check-success .edc-check-icon {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.edc-check-warning .edc-check-icon {
+    background: #fff8e1;
+    color: #8a6d00;
+}
+
+.edc-check-error .edc-check-icon {
+    background: #fdecea;
+    color: #b71c1c;
+}
+
+.edc-check-title {
+    font-weight: 700;
+    color: #1f2925;
+}
+
+.edc-check-message {
+    margin-top: 2px;
+    color: #5f6b66;
+    font-size: 13px;
+}
+
+.edc-check-action {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.edc-chip {
+    display: inline-block;
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.edc-chip-success {
+    background: #e8f5e9;
+    color: #1b5e20;
+}
+
+.edc-chip-warning {
+    background: #fff8e1;
+    color: #8a6d00;
+}
+
+.edc-chip-neutral {
+    background: #eef2f0;
+    color: #3d4944;
+}
+
+.edc-setup-nextsteps {
+    background: #f8faf9;
+    border: 1px solid #dfe4e1;
+    border-radius: 8px;
+    padding: 18px;
+}
+
+.edc-setup-nextsteps ol {
+    margin: 0;
+    padding-left: 22px;
+}
+
+.edc-help-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.edc-help-section,
+.edc-settings-redirect {
+    background: #fff;
+    border: 1px solid #dfe4e1;
+    border-radius: 8px;
+    padding: 18px;
+}
+
+.edc-help-section h3,
+.edc-settings-redirect h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #1f2925;
+}
+
+.edc-help-section ul {
+    margin: 0;
+    padding-left: 18px;
+}
+
+.edc-help-section li {
+    margin-bottom: 8px;
+}
+
+.edc-fields-table code {
+    white-space: nowrap;
+}
+
+.edc-help-tip {
+    display: inline-flex;
+    width: 18px;
+    height: 18px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #eef2f0;
+    color: #3d4944;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: help;
+}
+
+.edc-admin-panel .edc-nav {
+    margin-bottom: 16px;
+}
+
+.edc-admin-panel {
+    margin-bottom: 16px;
+}
+
+.edc-admin-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+
+/* ------------------------------------------------------------------
+   EDC field mapping report
+-------------------------------------------------------------------*/
+
+.edc-field-report {
+    margin-top: 28px;
+    background: #f8faf9;
+    border: 1px solid #dfe7e3;
+    border-radius: 14px;
+    padding: 22px 24px;
+}
+
+.edc-field-report h2 {
+    margin: 0 0 10px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0A4733;
+}
+
+.edc-field-report p {
+    margin-bottom: 18px;
+    color: #555;
+    font-size: 14px;
+}
+
+.edc-field-report table.generaltable {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,.04);
+}
+
+.edc-field-report table.generaltable thead th {
+    background: #eef5f1;
+    color: #0A4733;
+    font-size: 13px;
+    font-weight: 700;
+    border-bottom: 1px solid #d9e5df;
+    padding: 14px;
+}
+
+.edc-field-report table.generaltable td {
+    padding: 14px;
+    vertical-align: middle;
+    border-bottom: 1px solid #edf1ef;
+    font-size: 13px;
+}
+
+.edc-field-report table.generaltable tr:last-child td {
+    border-bottom: none;
+}
+
+.edc-field-report table.generaltable tbody tr:hover {
+    background: #fafdfb;
+}
+
+.edc-missing-required {
+    background: #fff4f4 !important;
+}
+
+.edc-missing-required td {
+    color: #8f1d1d;
+}
+
+.edc-preview-short,
+.edc-preview-full {
+    white-space: pre-line;
+    line-height: 1.5;
+    color: #333;
+}
+
+.edc-preview-short {
+    max-width: 360px;
+}
+
+/* ==========================================================
+   Compact UI refresh for local_edc_exporter.
+   Only changes visual presentation. It does not change logic.
+   ========================================================== */
+
+.edc-wrapper,
+.edc-view,
+.edc-admin-panel,
+.edc-admin-card,
+.edc-field-row,
+.edc-field-report {
+    --edc-primary: #0A4733;
+    --edc-primary-soft: #eef5f1;
+    --edc-border: #dfe7e3;
+    --edc-bg: #f8faf9;
+    --edc-surface: #ffffff;
+    --edc-text: #1f2933;
+    --edc-muted: #647067;
+    --edc-warning-bg: #fff8e8;
+    --edc-warning-text: #8a5a00;
+    --edc-success-bg: #e8f5e9;
+    --edc-success-text: #1b5e20;
+    --edc-error-bg: #fdecea;
+    --edc-error-text: #b71c1c;
+    --edc-radius: 14px;
+    --edc-shadow: 0 4px 14px rgba(0, 0, 0, .04);
+}
+
+/* More compact general layout. */
+.edc-wrapper {
+    padding: 22px;
+}
+
+.edc-page-header,
+.edc-admin-panel-header,
+.edc-config-status-main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.edc-page-header {
+    margin-bottom: 18px;
+}
+
+.edc-title {
+    font-size: 24px;
+    line-height: 1.2;
+    margin-bottom: 6px;
+}
+
+.edc-subtitle {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: var(--edc-muted);
+}
+
+.edc-header-actions,
+.edc-admin-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Reusable admin cards. */
+.edc-admin-panel,
+.edc-admin-card {
+    background: var(--edc-surface);
+    border: 1px solid var(--edc-border);
+    border-radius: var(--edc-radius);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: var(--edc-shadow);
+}
+
+.edc-admin-panel h3,
+.edc-admin-card h3 {
+    margin: 0 0 4px;
+    font-size: 17px;
+    color: var(--edc-text);
+}
+
+.edc-admin-panel p,
+.edc-admin-card p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--edc-muted);
+}
+
+/* Collapsible blocks. */
+.edc-details {
+    margin-top: 12px;
+}
+
+.edc-details summary,
+.edc-field-details summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--edc-primary);
+    font-size: 13px;
+}
+
+.edc-details ol {
+    margin: 10px 0 0 18px;
+    font-size: 13px;
+}
+
+/* Compact metrics. */
+.edc-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.edc-stat {
+    background: var(--edc-bg);
+    border: 1px solid var(--edc-border);
+    border-radius: 12px;
+    padding: 10px 12px;
+}
+
+.edc-stat-value {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--edc-primary);
+}
+
+.edc-stat-label {
+    display: block;
+    font-size: 12px;
+    color: var(--edc-muted);
+}
+
+/* Compact chips. */
+.edc-chip {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: 4px 9px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.edc-chip-success {
+    background: var(--edc-success-bg);
+    color: var(--edc-success-text);
+}
+
+.edc-chip-warning {
+    background: var(--edc-warning-bg);
+    color: var(--edc-warning-text);
+}
+
+.edc-chip-error {
+    background: var(--edc-error-bg);
+    color: var(--edc-error-text);
+}
+
+.edc-chip-neutral {
+    background: var(--edc-primary-soft);
+    color: var(--edc-primary);
+}
+
+/* Compact rows for EDC fields. */
+.edc-field-row {
+    background: var(--edc-surface);
+    border: 1px solid var(--edc-border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    margin-bottom: 8px;
+}
+
+.edc-field-main {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.edc-field-main strong {
+    font-size: 14px;
+    color: var(--edc-text);
+}
+
+.edc-field-source code {
+    font-size: 12px;
+}
+
+.edc-field-meta {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.edc-field-details {
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--edc-muted);
+}
+
+.edc-field-details div {
+    margin-top: 4px;
+}
+
+/* More compact table. */
+.edc-table th {
+    padding: 10px 12px;
+    font-size: 12px;
+    border-bottom-width: 2px;
+}
+
+.edc-table td {
+    padding: 10px 12px;
+    font-size: 13px;
+}
+
+.edc-status {
+    padding: 4px 9px;
+    font-size: 11px;
+}
+
+/* Buttons with visual hierarchy. */
+.edc-btn {
+    border-radius: 999px;
+    padding: 6px 11px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.edc-btn-primary {
+    background: var(--edc-primary);
+    color: #fff !important;
+}
+
+.edc-btn-secondary {
+    background: var(--edc-primary-soft);
+    color: var(--edc-primary) !important;
+}
+
+.edc-btn-light {
+    background: #f4f6f5;
+    color: #4b5563 !important;
+}
+
+.edc-btn-primary:hover,
+.edc-btn-secondary:hover,
+.edc-btn-light:hover {
+    text-decoration: none;
+    filter: brightness(.97);
+}
+
+/* Cleaner individual view. */
+.edc-view {
+    max-width: 820px;
+}
+
+.edc-card {
+    border: 1px solid var(--edc-border);
+    border-radius: 18px;
+    box-shadow: var(--edc-shadow);
+}
+
+.edc-view-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.edc-name {
+    font-size: 21px;
+    margin-bottom: 16px;
+}
+
+.edc-course {
+    font-size: 18px;
+    margin-bottom: 18px;
+}
+
+.edc-meta {
+    gap: 8px;
+}
+
+.edc-meta-item {
+    border: 1px solid var(--edc-border);
+    background: var(--edc-bg);
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+    .edc-wrapper {
+        padding: 16px;
+    }
+
+    .edc-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .edc-meta {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Grouped list actions. */
+.edc-action-group {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.edc-actions a {
+    margin-left: 0;
+}
+
+
+/* Individual view: more compact card. */
+.edc-view {
+    margin-top: 12px;
+    margin-bottom: 20px;
+}
+
+.edc-card {
+    padding: 22px 26px;
+}
+
+.edc-kicker {
+    margin-bottom: 5px;
+}
+
+.edc-view-title {
+    margin-bottom: 16px;
+}
+
+.edc-label {
+    margin-bottom: 2px;
+}
+
+.edc-meta {
+    margin-top: 14px;
+}
+
+.edc-meta-item {
+    padding: 10px 12px;
+}
+
+.edc-downloads {
+    margin-top: 16px;
+}
+
+.edc-settings-warning {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: #fff3cd;
+    border: 1px solid #ffeeba;
+}
+
+.edc-settings-warning-text {
+    margin: 8px 0 0 0;
+}
+
+.edc-mt-sm {
+    margin-top: 12px;
+}
+
+.edc-list-compact {
+    margin-bottom: 0;
+}
+
+.edc-settings-field-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.edc-preview-details {
+    margin-top: .5rem;
+}
+
+.edc-preview-details summary {
+    cursor: pointer;
+    color: var(--edc-primary);
+    font-weight: 600;
+    list-style-position: outside;
+}
+
+.edc-preview-details[open] .edc-preview-short {
+    display: none;
+}
+
+.edc-preview-toggle {
+    display: block;
+    margin-top: .35rem;
+    font-size: 12px;
+    color: var(--edc-primary);
+}
+
+.edc-preview-full {
+    margin-top: .75rem;
+    padding: 14px;
+    background: #f4f7f5;
+    border: 1px solid #dfe7e3;
+    border-radius: 10px;
+    max-width: 520px;
+    white-space: pre-line;
+    line-height: 1.5;
+    color: #333;
+}
+
+.edc-view-action-links {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.edc-issuer-logo-wrap {
+    margin-bottom: 18px;
+}
+
+.edc-issuer-logo {
+    max-width: 180px;
+    max-height: 90px;
+    width: auto;
+    height: auto;
+    display: block;
+    object-fit: contain;
+}
+
+.edc-verify-card {
+    max-width: 920px;
+}
+
+.edc-verify-status {
+    border-radius: 8px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    padding: .85rem 1rem;
+}
+
+.edc-verify-valid {
+    background: var(--edc-success-bg, #e8f5e9);
+    color: var(--edc-success-text, #1b5e20);
+}
+
+.edc-verify-revoked,
+.edc-verify-invalid {
+    background: var(--edc-error-bg, #fdecea);
+    color: var(--edc-error-text, #b71c1c);
+}
+
+.edc-verify-expired {
+    background: var(--edc-warning-bg, #fff8e8);
+    color: var(--edc-warning-text, #8a5a00);
+}
+
+.edc-generation-blocked {
+    background: #fff8e8;
+    border: 1px solid #f3d28b;
+    border-left: 4px solid #d98d00;
+    border-radius: 10px;
+    margin: 0 0 18px;
+    padding: 14px 16px;
+}
+
+.edc-generation-blocked-title {
+    color: #5f3f00;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.edc-generation-blocked-message {
+    color: #5f3f00;
+    font-size: 13px;
+}
+
+.edc-blocked-list {
+    margin: 10px 0 0 18px;
+    padding: 0;
+}
+
+.edc-blocked-list li {
+    color: #3d3524;
+    font-size: 13px;
+    margin-bottom: 4px;
+}
+
+.edc-generation-blocked-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* Bottom table for custom HTML variables.
+   Keeps the original white and grey row colours on hover. */
+.edc-admin-card table.generaltable tbody tr:nth-child(odd),
+.edc-admin-card table.generaltable tbody tr:nth-child(odd) > td,
+.edc-admin-card table.generaltable tbody tr:nth-child(odd):hover,
+.edc-admin-card table.generaltable tbody tr:nth-child(odd):hover > td {
+    background-color: #ffffff !important;
+    box-shadow: none !important;
+}
+
+.edc-admin-card table.generaltable tbody tr:nth-child(even),
+.edc-admin-card table.generaltable tbody tr:nth-child(even) > td,
+.edc-admin-card table.generaltable tbody tr:nth-child(even):hover,
+.edc-admin-card table.generaltable tbody tr:nth-child(even):hover > td {
+    background-color: #f8f9fa !important;
+    box-shadow: none !important;
+}

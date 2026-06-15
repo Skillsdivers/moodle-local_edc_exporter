@@ -1,0 +1,29 @@
+# Manual Testing Checklist
+
+- Install plugin from clean Moodle.
+- Upgrade from previous version.
+- Configure issuer.
+- Upload logo.
+- Configure visual template.
+- Create test course.
+- Enrol student.
+- Complete course.
+- Generate credential.
+- View credential.
+- Download JSON.
+- Validate JSON structure.
+- Open verification URL.
+- Verify invalid token.
+- Revoke credential.
+- Verify revoked credential.
+- Try view/download as manager.
+- Try view/download as teacher.
+- Try view/download as student.
+- Try as guest.
+- Check Moodle logs.
+- Check audit table.
+- Run Privacy API export.
+- Run Privacy API deletion.
+- Run CodeChecker.
+- Run `php -l`.
+- Repackage ZIP.
