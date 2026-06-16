@@ -46,46 +46,46 @@ class provider implements
      */
     public static function get_metadata(collection $collection): collection {
         $collection->add_database_table(
-            'local_edcexport_cred',
+            'local_edc_exporter_cred',
             [
-                'userid' => 'privacy:metadata:local_edcexport_cred:userid',
-                'courseid' => 'privacy:metadata:local_edcexport_cred:courseid',
-                'completionid' => 'privacy:metadata:local_edcexport_cred:completionid',
-                'credentialid' => 'privacy:metadata:local_edcexport_cred:credentialid',
-                'status' => 'privacy:metadata:local_edcexport_cred:status',
-                'internal_json' => 'privacy:metadata:local_edcexport_cred:internal_json',
-                'export_json' => 'privacy:metadata:local_edcexport_cred:export_json',
-                'internal_json_path' => 'privacy:metadata:local_edcexport_cred:internal_json_path',
-                'export_json_path' => 'privacy:metadata:local_edcexport_cred:export_json_path',
-                'issuedat' => 'privacy:metadata:local_edcexport_cred:issuedat',
-                'expiresat' => 'privacy:metadata:local_edcexport_cred:expiresat',
-                'revokedat' => 'privacy:metadata:local_edcexport_cred:revokedat',
-                'revokedby' => 'privacy:metadata:local_edcexport_cred:revokedby',
-                'revocationreason' => 'privacy:metadata:local_edcexport_cred:revocationreason',
-                'verificationtoken' => 'privacy:metadata:local_edcexport_cred:verificationtoken',
-                'version' => 'privacy:metadata:local_edcexport_cred:version',
-                'payloadhash' => 'privacy:metadata:local_edcexport_cred:payloadhash',
-                'validationerrors' => 'privacy:metadata:local_edcexport_cred:validationerrors',
-                'errormessage' => 'privacy:metadata:local_edcexport_cred:errormessage',
-                'timecreated' => 'privacy:metadata:local_edcexport_cred:timecreated',
-                'timemodified' => 'privacy:metadata:local_edcexport_cred:timemodified',
-                'usermodified' => 'privacy:metadata:local_edcexport_cred:usermodified',
+                'userid' => 'privacy:metadata:local_edc_exporter_cred:userid',
+                'courseid' => 'privacy:metadata:local_edc_exporter_cred:courseid',
+                'completionid' => 'privacy:metadata:local_edc_exporter_cred:completionid',
+                'credentialid' => 'privacy:metadata:local_edc_exporter_cred:credentialid',
+                'status' => 'privacy:metadata:local_edc_exporter_cred:status',
+                'internal_json' => 'privacy:metadata:local_edc_exporter_cred:internal_json',
+                'export_json' => 'privacy:metadata:local_edc_exporter_cred:export_json',
+                'internal_json_path' => 'privacy:metadata:local_edc_exporter_cred:internal_json_path',
+                'export_json_path' => 'privacy:metadata:local_edc_exporter_cred:export_json_path',
+                'issuedat' => 'privacy:metadata:local_edc_exporter_cred:issuedat',
+                'expiresat' => 'privacy:metadata:local_edc_exporter_cred:expiresat',
+                'revokedat' => 'privacy:metadata:local_edc_exporter_cred:revokedat',
+                'revokedby' => 'privacy:metadata:local_edc_exporter_cred:revokedby',
+                'revocationreason' => 'privacy:metadata:local_edc_exporter_cred:revocationreason',
+                'verificationtoken' => 'privacy:metadata:local_edc_exporter_cred:verificationtoken',
+                'version' => 'privacy:metadata:local_edc_exporter_cred:version',
+                'payloadhash' => 'privacy:metadata:local_edc_exporter_cred:payloadhash',
+                'validationerrors' => 'privacy:metadata:local_edc_exporter_cred:validationerrors',
+                'errormessage' => 'privacy:metadata:local_edc_exporter_cred:errormessage',
+                'timecreated' => 'privacy:metadata:local_edc_exporter_cred:timecreated',
+                'timemodified' => 'privacy:metadata:local_edc_exporter_cred:timemodified',
+                'usermodified' => 'privacy:metadata:local_edc_exporter_cred:usermodified',
             ],
-            'privacy:metadata:local_edcexport_cred'
+            'privacy:metadata:local_edc_exporter_cred'
         );
 
         $collection->add_database_table(
-            'local_edcexport_log',
+            'local_edc_exporter_log',
             [
-                'credentialid' => 'privacy:metadata:local_edcexport_log:credentialid',
-                'userid' => 'privacy:metadata:local_edcexport_log:userid',
-                'courseid' => 'privacy:metadata:local_edcexport_log:courseid',
-                'actorid' => 'privacy:metadata:local_edcexport_log:actorid',
-                'action' => 'privacy:metadata:local_edcexport_log:action',
-                'details' => 'privacy:metadata:local_edcexport_log:details',
-                'timecreated' => 'privacy:metadata:local_edcexport_log:timecreated',
+                'credentialid' => 'privacy:metadata:local_edc_exporter_log:credentialid',
+                'userid' => 'privacy:metadata:local_edc_exporter_log:userid',
+                'courseid' => 'privacy:metadata:local_edc_exporter_log:courseid',
+                'actorid' => 'privacy:metadata:local_edc_exporter_log:actorid',
+                'action' => 'privacy:metadata:local_edc_exporter_log:action',
+                'details' => 'privacy:metadata:local_edc_exporter_log:details',
+                'timecreated' => 'privacy:metadata:local_edc_exporter_log:timecreated',
             ],
-            'privacy:metadata:local_edcexport_log'
+            'privacy:metadata:local_edc_exporter_log'
         );
 
         return $collection;
@@ -102,7 +102,7 @@ class provider implements
 
         $sql = "SELECT ctx.id
                   FROM {context} ctx
-                  JOIN {local_edcexport_cred} cred
+                  JOIN {local_edc_exporter_cred} cred
                     ON cred.courseid = ctx.instanceid
                  WHERE ctx.contextlevel = :contextlevel
                    AND cred.userid = :userid";
@@ -116,7 +116,7 @@ class provider implements
 
         $sql = "SELECT ctx.id
                   FROM {context} ctx
-                  JOIN {local_edcexport_log} log
+                  JOIN {local_edc_exporter_log} log
                     ON log.courseid = ctx.instanceid
                  WHERE ctx.contextlevel = :contextlevel
                    AND (log.userid = :userid OR log.actorid = :actorid)";
@@ -146,7 +146,7 @@ class provider implements
         }
 
         $sql = "SELECT userid
-                  FROM {local_edcexport_cred}
+                  FROM {local_edc_exporter_cred}
                  WHERE courseid = :courseid";
 
         $params = [
@@ -156,12 +156,12 @@ class provider implements
         $userlist->add_from_sql('userid', $sql, $params);
 
         $sql = "SELECT userid
-                  FROM {local_edcexport_log}
+                  FROM {local_edc_exporter_log}
                  WHERE courseid = :courseid
                    AND userid IS NOT NULL
                  UNION
                 SELECT actorid
-                  FROM {local_edcexport_log}
+                  FROM {local_edc_exporter_log}
                  WHERE courseid = :actorcourseid
                    AND actorid IS NOT NULL";
 
@@ -190,7 +190,7 @@ class provider implements
             }
 
             $records = $DB->get_records(
-                'local_edcexport_cred',
+                'local_edc_exporter_cred',
                 [
                     'userid' => $userid,
                     'courseid' => $context->instanceid,
@@ -211,7 +211,7 @@ class provider implements
             }
 
             $logs = $DB->get_records_select(
-                'local_edcexport_log',
+                'local_edc_exporter_log',
                 'courseid = :courseid AND (userid = :userid OR actorid = :actorid)',
                 [
                     'courseid' => $context->instanceid,
@@ -247,15 +247,15 @@ class provider implements
         }
 
         $records = $DB->get_records(
-            'local_edcexport_cred',
+            'local_edc_exporter_cred',
             ['courseid' => $context->instanceid]
         );
 
-        $DB->delete_records('local_edcexport_log', ['courseid' => $context->instanceid]);
+        $DB->delete_records('local_edc_exporter_log', ['courseid' => $context->instanceid]);
 
         foreach ($records as $record) {
             self::delete_record_files($record);
-            $DB->delete_records('local_edcexport_cred', ['id' => $record->id]);
+            $DB->delete_records('local_edc_exporter_cred', ['id' => $record->id]);
         }
     }
 
@@ -276,7 +276,7 @@ class provider implements
             }
 
             $records = $DB->get_records(
-                'local_edcexport_cred',
+                'local_edc_exporter_cred',
                 [
                     'userid' => $userid,
                     'courseid' => $context->instanceid,
@@ -291,7 +291,7 @@ class provider implements
 
             foreach ($records as $record) {
                 self::delete_record_files($record);
-                $DB->delete_records('local_edcexport_cred', ['id' => $record->id]);
+                $DB->delete_records('local_edc_exporter_cred', ['id' => $record->id]);
             }
         }
     }
@@ -321,7 +321,7 @@ class provider implements
         $params['courseid'] = $context->instanceid;
 
         $records = $DB->get_records_select(
-            'local_edcexport_cred',
+            'local_edc_exporter_cred',
             "courseid = :courseid AND userid {$insql}",
             $params
         );
@@ -330,7 +330,7 @@ class provider implements
 
         foreach ($records as $record) {
             self::delete_record_files($record);
-            $DB->delete_records('local_edcexport_cred', ['id' => $record->id]);
+            $DB->delete_records('local_edc_exporter_cred', ['id' => $record->id]);
         }
     }
 
@@ -402,17 +402,17 @@ class provider implements
 
         if (!empty($recordids)) {
             [$recordinsql, $recordparams] = $DB->get_in_or_equal($recordids, SQL_PARAMS_NAMED, 'credentialid');
-            $DB->delete_records_select('local_edcexport_log', "credentialid {$recordinsql}", $recordparams);
+            $DB->delete_records_select('local_edc_exporter_log', "credentialid {$recordinsql}", $recordparams);
         }
 
         if ($userwhere !== null) {
-            $DB->delete_records_select('local_edcexport_log', $userwhere, $params);
+            $DB->delete_records_select('local_edc_exporter_log', $userwhere, $params);
             return;
         }
 
         if (array_key_exists('userid', $params) && array_key_exists('actorid', $params)) {
             $DB->delete_records_select(
-                'local_edcexport_log',
+                'local_edc_exporter_log',
                 'courseid = :courseid AND (userid = :userid OR actorid = :actorid)',
                 $params
             );

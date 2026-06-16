@@ -74,7 +74,7 @@ foreach ($completions as $completion) {
     }
 
     // Existing credential record for this learner and course, if present.
-    $existing = $DB->get_record('local_edcexport_cred', [
+    $existing = $DB->get_record('local_edc_exporter_cred', [
         'userid' => $completion->userid,
         'courseid' => $courseid,
     ]);
@@ -108,7 +108,7 @@ foreach ($completions as $completion) {
 
         // If the service left a credential in processing before failing,
         // mark it as error so it is not visually stuck.
-        $failedrecord = $DB->get_record('local_edcexport_cred', [
+        $failedrecord = $DB->get_record('local_edc_exporter_cred', [
             'userid' => $completion->userid,
             'courseid' => $courseid,
         ]);
@@ -117,7 +117,7 @@ foreach ($completions as $completion) {
             $failedrecord->status = output_helper::STATUS_ERROR;
             $failedrecord->errormessage = $message;
             $failedrecord->timemodified = time();
-            $DB->update_record('local_edcexport_cred', $failedrecord);
+            $DB->update_record('local_edc_exporter_cred', $failedrecord);
         }
     }
 }

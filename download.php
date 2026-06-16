@@ -34,7 +34,7 @@ $id = required_param('id', PARAM_INT);
 $type = required_param('type', PARAM_ALPHANUMEXT);
 
 // Plugin table record containing status and file paths.
-$record = $DB->get_record('local_edcexport_cred', ['id' => $id], '*', MUST_EXIST);
+$record = $DB->get_record('local_edc_exporter_cred', ['id' => $id], '*', MUST_EXIST);
 
 // Course linked to the credential. It is used in require_login() to validate
 // access inside the real course context, not only as an authenticated user.

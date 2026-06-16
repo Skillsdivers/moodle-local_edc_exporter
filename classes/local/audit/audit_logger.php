@@ -102,6 +102,6 @@ class audit_logger {
             'timecreated' => time(),
         ];
 
-        $DB->insert_record('local_edcexport_log', $record);
+        $DB->insert_record('local_edc_exporter_log', $record);
     }
 }

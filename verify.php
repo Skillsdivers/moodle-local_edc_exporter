@@ -63,7 +63,7 @@ echo html_writer::div(get_string('verifyintro', 'local_edc_exporter'), 'edc-subt
 echo html_writer::end_div();
 echo html_writer::end_div();
 
-$record = $DB->get_record('local_edcexport_cred', ['verificationtoken' => $token]);
+$record = $DB->get_record('local_edc_exporter_cred', ['verificationtoken' => $token]);
 
 if (!$record) {
     // Count only failed token lookups. Valid verification links are not penalised.

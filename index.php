@@ -48,18 +48,18 @@ echo $OUTPUT->header();
 
 $coursestatus = configuration_status::course_status($courseid);
 
-$totalrecords = $DB->count_records('local_edcexport_cred', ['courseid' => $courseid]);
-$generatedcount = $DB->count_records('local_edcexport_cred', [
+$totalrecords = $DB->count_records('local_edc_exporter_cred', ['courseid' => $courseid]);
+$generatedcount = $DB->count_records('local_edc_exporter_cred', [
     'courseid' => $courseid,
     'status' => output_helper::STATUS_GENERATED,
 ]);
-$errorcount = $DB->count_records('local_edcexport_cred', [
+$errorcount = $DB->count_records('local_edc_exporter_cred', [
     'courseid' => $courseid,
     'status' => output_helper::STATUS_ERROR,
 ]);
 
 $sql = "SELECT c.*, u.firstname, u.lastname, u.email
-          FROM {local_edcexport_cred} c
+          FROM {local_edc_exporter_cred} c
           JOIN {user} u ON u.id = c.userid
          WHERE c.courseid = :courseid
       ORDER BY c.timecreated DESC";
@@ -81,7 +81,7 @@ $completedusers = $DB->get_records_sql(
 
 $pendingcount = 0;
 foreach ($completedusers as $completeduser) {
-    $existing = $DB->get_record('local_edcexport_cred', [
+    $existing = $DB->get_record('local_edc_exporter_cred', [
         'userid' => $completeduser->userid,
         'courseid' => $courseid,
     ]);

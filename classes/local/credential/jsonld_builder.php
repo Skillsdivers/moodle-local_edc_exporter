@@ -39,7 +39,7 @@ class jsonld_builder {
      *
      * @param \stdClass $user Moodle user receiving the credential.
      * @param \stdClass $course Moodle course completed by the user.
-     * @param \stdClass $record local_edcexport_cred record storing status and identifiers.
+     * @param \stdClass $record local_edc_exporter_cred record storing status and identifiers.
      * @param array $gradeinfo Course final grade, if any.
      * @param array $metadata Course custom fields used to describe the credential.
      * @param array $settings Global plugin settings, such as issuer data.

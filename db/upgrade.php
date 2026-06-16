@@ -35,7 +35,7 @@ function xmldb_local_edc_exporter_upgrade($oldversion): bool {
 
     if ($oldversion < 2026042701) {
         // Tracking table for one export lifecycle per user/course pair.
-        $table = new xmldb_table('local_edcexport_cred');
+        $table = new xmldb_table('local_edc_exporter_cred');
 
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
         $table->add_field('userid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
@@ -69,7 +69,7 @@ function xmldb_local_edc_exporter_upgrade($oldversion): bool {
     }
 
     if ($oldversion < 2026042800) {
-        $table = new xmldb_table('local_edcexport_cred');
+        $table = new xmldb_table('local_edc_exporter_cred');
 
         $oldfield = new xmldb_field('credentialuuid', XMLDB_TYPE_CHAR, '36', null, XMLDB_NOTNULL, null, null);
         $newfield = new xmldb_field('credentialid', XMLDB_TYPE_CHAR, '36', null, XMLDB_NOTNULL, null, null, 'completionid');
@@ -117,7 +117,7 @@ function xmldb_local_edc_exporter_upgrade($oldversion): bool {
     }
 
     if ($oldversion < 2026060201) {
-        $table = new xmldb_table('local_edcexport_cred');
+        $table = new xmldb_table('local_edc_exporter_cred');
 
         $newfields = [
             new xmldb_field('issuedat', XMLDB_TYPE_INTEGER, '10', null, null, null, null, 'export_json_path'),
@@ -137,7 +137,7 @@ function xmldb_local_edc_exporter_upgrade($oldversion): bool {
         }
 
         // Backfills minimum data for existing credentials.
-        $records = $DB->get_records('local_edcexport_cred');
+        $records = $DB->get_records('local_edc_exporter_cred');
 
         foreach ($records as $record) {
             $changed = false;
@@ -152,7 +152,7 @@ function xmldb_local_edc_exporter_upgrade($oldversion): bool {
                 do {
                     $record->verificationtoken = bin2hex(random_bytes(32));
                 } while (
-                    $DB->record_exists('local_edcexport_cred', [
+                    $DB->record_exists('local_edc_exporter_cred', [
                         'verificationtoken' => $record->verificationtoken,
                     ])
                 );
@@ -166,7 +166,7 @@ function xmldb_local_edc_exporter_upgrade($oldversion): bool {
             }
 
             if ($changed) {
-                $DB->update_record('local_edcexport_cred', $record);
+                $DB->update_record('local_edc_exporter_cred', $record);
             }
         }
 
@@ -201,11 +201,11 @@ function xmldb_local_edc_exporter_upgrade($oldversion): bool {
 
     if ($oldversion < 2026060211) {
         // Minimal audit table for important credential actions.
-        $table = new xmldb_table('local_edcexport_log');
+        $table = new xmldb_table('local_edc_exporter_log');
 
         $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
 
-        // Internal local_edcexport_cred.id.
+        // Internal local_edc_exporter_cred.id.
         $table->add_field('credentialid', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
 
         // Credential holder user.
@@ -227,7 +227,7 @@ function xmldb_local_edc_exporter_upgrade($oldversion): bool {
         $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
 
         $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
-        $table->add_key('credentialid_fk', XMLDB_KEY_FOREIGN, ['credentialid'], 'local_edcexport_cred', ['id']);
+        $table->add_key('credentialid_fk', XMLDB_KEY_FOREIGN, ['credentialid'], 'local_edc_exporter_cred', ['id']);
         $table->add_key('userid_fk', XMLDB_KEY_FOREIGN, ['userid'], 'user', ['id']);
         $table->add_key('courseid_fk', XMLDB_KEY_FOREIGN, ['courseid'], 'course', ['id']);
         $table->add_key('actorid_fk', XMLDB_KEY_FOREIGN, ['actorid'], 'user', ['id']);

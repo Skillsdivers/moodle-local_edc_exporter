@@ -30,7 +30,7 @@ use local_edc_exporter\local\ui\output_helper;
 
 $id = required_param('id', PARAM_INT);
 
-$record = $DB->get_record('local_edcexport_cred', ['id' => $id], '*', MUST_EXIST);
+$record = $DB->get_record('local_edc_exporter_cred', ['id' => $id], '*', MUST_EXIST);
 $course = $DB->get_record('course', ['id' => $record->courseid], '*', MUST_EXIST);
 
 require_login($course);

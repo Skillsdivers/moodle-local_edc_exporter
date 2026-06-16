@@ -25,7 +25,7 @@ use local_edc_exporter\local\ui\output_helper;
  *
  * Full flow:
  * - receives Moodle's course_completed event;
- * - creates or reuses the local_edcexport_cred record;
+ * - creates or reuses the local_edc_exporter_cred record;
  * - collects user, course, grade, metadata, and administrative settings;
  * - builds export_json and internal_json through jsonld_builder;
  * - validates export_json before marking the credential as generated;
@@ -67,7 +67,7 @@ class export_service {
         $completion = $DB->get_record('course_completions', ['id' => $completionid], '*', MUST_EXIST);
 
         // Finds an existing credential to avoid duplicates for the same learner and course.
-        $record = $DB->get_record('local_edcexport_cred', ['userid' => $userid, 'courseid' => $courseid]);
+        $record = $DB->get_record('local_edc_exporter_cred', ['userid' => $userid, 'courseid' => $courseid]);
 
         if ($record && $record->status === output_helper::STATUS_REVOKED) {
             throw new \moodle_exception('alreadyrevoked', 'local_edc_exporter');
@@ -107,7 +107,7 @@ class export_service {
                 'timecreated' => $now,
                 'timemodified' => $now,
             ];
-            $record->id = $DB->insert_record('local_edcexport_cred', $record);
+            $record->id = $DB->insert_record('local_edc_exporter_cred', $record);
         } else {
             // If a credential already exists for this user and course, it will be regenerated.
             // Before creating the new version, previous JSON files for the same user and course
@@ -142,7 +142,7 @@ class export_service {
             $record->errormessage = null;
             $record->timemodified = $now;
 
-            $DB->update_record('local_edcexport_cred', $record);
+            $DB->update_record('local_edc_exporter_cred', $record);
         }
 
         // Learner data displayed in the credential.
@@ -193,7 +193,7 @@ class export_service {
         if (!empty($errors)) {
             // If important data is missing, mark as error and do not write downloadable files.
             $record->status = output_helper::STATUS_ERROR;
-            $DB->update_record('local_edcexport_cred', $record);
+            $DB->update_record('local_edc_exporter_cred', $record);
             debugging(
                 '[local_edc_exporter] Validation error for user ' . $userid . ', course ' . $courseid . ': ' .
                     $record->errormessage,
@@ -250,7 +250,7 @@ class export_service {
 
         // From this point, status=generated plus export_json_path identifies a credential
         // that is ready for viewing and download.
-        $DB->update_record('local_edcexport_cred', $record);
+        $DB->update_record('local_edc_exporter_cred', $record);
     }
 
     /**
@@ -342,7 +342,7 @@ class export_service {
 
         do {
             $token = bin2hex(random_bytes(32));
-        } while ($DB->record_exists('local_edcexport_cred', ['verificationtoken' => $token]));
+        } while ($DB->record_exists('local_edc_exporter_cred', ['verificationtoken' => $token]));
 
         return $token;
     }

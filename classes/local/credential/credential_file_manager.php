@@ -88,7 +88,7 @@ class credential_file_manager {
     /**
      * Deletes previous JSON files linked to a credential record.
      *
-     * @param object $record Record from local_edcexport_cred.
+     * @param object $record Record from local_edc_exporter_cred.
      * @return void
      */
     public static function delete_existing_credential_files(object $record): void {

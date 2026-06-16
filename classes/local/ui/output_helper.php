@@ -61,7 +61,7 @@ class output_helper {
     /**
      * Builds the visual credential view URL.
      *
-     * @param int $id local_edcexport_cred record ID.
+     * @param int $id local_edc_exporter_cred record ID.
      * @return \moodle_url URL for view.php with id.
      */
     public static function view_url(int $id): \moodle_url {
@@ -81,7 +81,7 @@ class output_helper {
     /**
      * Builds a sesskey-protected download URL.
      *
-     * @param int $id local_edcexport_cred record ID.
+     * @param int $id local_edc_exporter_cred record ID.
      * @param string $type Download type: export or internal.
      * @return \moodle_url URL for download.php.
      */
@@ -97,7 +97,7 @@ class output_helper {
     /**
      * Builds the URL to regenerate a credential.
      *
-     * @param int $id local_edcexport_cred record ID.
+     * @param int $id local_edc_exporter_cred record ID.
      * @return \moodle_url URL for regenerate.php.
      */
     public static function regenerate_url(int $id): \moodle_url {
@@ -110,7 +110,7 @@ class output_helper {
     /**
      * Builds the credential revocation form URL.
      *
-     * @param int $id local_edcexport_cred record ID.
+     * @param int $id local_edc_exporter_cred record ID.
      * @return \moodle_url URL for revoke.php.
      */
     public static function revoke_url(int $id): \moodle_url {
