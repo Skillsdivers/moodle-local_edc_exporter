@@ -252,13 +252,68 @@ class jsonld_builder {
      * @return array Learner data formatted for the credential.
      */
     private static function build_learner(\stdClass $user): array {
+        // Some external EDC tools fail when givenName or familyName are present but empty.
+        // Moodle usually requires firstname and lastname, but imported users, test users,
+        // external authentication plugins or anonymised accounts may leave one field empty.
         $firstname = edc_concept_helper::clean_text((string) ($user->firstname ?? ''));
         $lastname  = edc_concept_helper::clean_text((string) ($user->lastname ?? ''));
-        $fullname  = trim($firstname . ' ' . $lastname);
+
+        // Start with the real Moodle name fields. If they are incomplete, use Moodle's
+        // visible full name and then safe technical fallbacks to avoid empty recipient data.
+        $fullname = trim($firstname . ' ' . $lastname);
+        $moodlefullname = edc_concept_helper::clean_text(fullname($user));
+        if ($fullname === '' && $moodlefullname !== '') {
+            $fullname = $moodlefullname;
+        }
+
+        if ($fullname === '') {
+            $email = edc_concept_helper::clean_text((string) ($user->email ?? ''));
+            $atpos = strpos($email, '@');
+            if ($atpos !== false && $atpos > 0) {
+                $fullname = substr($email, 0, $atpos);
+            }
+        }
+
+        if ($fullname === '') {
+            $fullname = edc_concept_helper::clean_text((string) ($user->username ?? ''));
+        }
+
+        // Make technical identifiers more readable when they are used as fallback names.
+        $fullname = trim((string) preg_replace('/[._-]+/', ' ', $fullname));
+        $fullname = trim((string) preg_replace('/\s+/', ' ', $fullname));
+
+        // If one Moodle name part is missing, derive it from the best available full name.
+        // This keeps fullName, givenName and familyName populated for stricter viewers.
+        $parts = preg_split('/\s+/', $fullname) ?: [];
+        $parts = array_values(array_filter($parts, static function($part): bool {
+            return trim((string) $part) !== '';
+        }));
+
+        if ($firstname === '' && !empty($parts)) {
+            $firstname = $parts[0];
+        }
+
+        if ($lastname === '' && count($parts) > 1) {
+            $lastname = implode(' ', array_slice($parts, 1));
+        }
+
+        // Final fallback: never leave EDC recipient name fields empty.
+        // If the source system only has one display name, it is repeated as the family name
+        // to avoid external diploma template errors caused by missing recipient data.
+        if ($firstname === '') {
+            $firstname = $fullname;
+        }
+        if ($lastname === '') {
+            $lastname = $fullname;
+        }
+        if ($fullname === '') {
+            $fullname = trim($firstname . ' ' . $lastname);
+        }
+
         return [
             'givenname'  => $firstname,
             'familyname' => $lastname,
-            'fullname'   => $fullname !== '' ? $fullname : (string) $user->username,
+            'fullname'   => $fullname,
         ];
     }
 
