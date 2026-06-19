@@ -47,12 +47,22 @@ require_capability('local/edc_exporter:generatepending', $context);
 // Existing completions in this course. Each completed record can generate a credential.
 $completions = $DB->get_records('course_completions', ['course' => $courseid]);
 
+// Preload existing credentials keyed by user to avoid one query per completion.
+$existingcredentials = $DB->get_records(
+    'local_edc_exporter_cred',
+    ['courseid' => $courseid],
+    '',
+    'userid, status, export_json_path'
+);
+
 // Number of credentials generated in this run.
 $generated = 0;
 // Number of completions skipped because they did not apply or already had a credential.
 $skipped = 0;
 // Number of errors caught during generation.
 $errors = 0;
+// Failed generations keyed by user, processed in bulk after the main loop.
+$failedgenerations = [];
 
 // Basic preflight validation for required fields.
 // Prevents credential generation when required custom fields are missing.
@@ -74,10 +84,7 @@ foreach ($completions as $completion) {
     }
 
     // Existing credential record for this learner and course, if present.
-    $existing = $DB->get_record('local_edc_exporter_cred', [
-        'userid' => $completion->userid,
-        'courseid' => $courseid,
-    ]);
+    $existing = $existingcredentials[$completion->userid] ?? null;
 
     if ($existing && $existing->status === output_helper::STATUS_GENERATED && !empty($existing->export_json_path)) {
         // Credential is already ready, so it is not regenerated without an explicit request.
@@ -106,19 +113,37 @@ foreach ($completions as $completion) {
 
         debugging('[local_edc_exporter] Pending credential generation failed: ' . $message, DEBUG_DEVELOPER);
 
-        // If the service left a credential in processing before failing,
-        // mark it as error so it is not visually stuck.
-        $failedrecord = $DB->get_record('local_edc_exporter_cred', [
-            'userid' => $completion->userid,
-            'courseid' => $courseid,
-        ]);
+        $failedgenerations[(int) $completion->userid] = $message;
+    }
+}
 
-        if ($failedrecord && $failedrecord->status === output_helper::STATUS_PROCESSING) {
-            $failedrecord->status = output_helper::STATUS_ERROR;
-            $failedrecord->errormessage = $message;
-            $failedrecord->timemodified = time();
-            $DB->update_record('local_edc_exporter_cred', $failedrecord);
+// If the service left credentials in processing before failing, load them in
+// one query and mark them as errors so they are not visually stuck.
+if (!empty($failedgenerations)) {
+    [$userinsql, $userparams] = $DB->get_in_or_equal(
+        array_keys($failedgenerations),
+        SQL_PARAMS_NAMED,
+        'faileduserid'
+    );
+    $userparams['courseid'] = $courseid;
+
+    $failedrecords = $DB->get_records_sql(
+        "SELECT c.userid, c.id, c.status
+           FROM {local_edc_exporter_cred} c
+          WHERE c.courseid = :courseid
+            AND c.userid {$userinsql}",
+        $userparams
+    );
+
+    foreach ($failedrecords as $failedrecord) {
+        if ($failedrecord->status !== output_helper::STATUS_PROCESSING) {
+            continue;
         }
+
+        $failedrecord->status = output_helper::STATUS_ERROR;
+        $failedrecord->errormessage = $failedgenerations[(int) $failedrecord->userid];
+        $failedrecord->timemodified = time();
+        $DB->update_record('local_edc_exporter_cred', $failedrecord);
     }
 }
 

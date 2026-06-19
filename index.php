@@ -79,12 +79,17 @@ $completedusers = $DB->get_records_sql(
     ['courseid' => $courseid]
 );
 
+// Preload existing credentials keyed by user to avoid one query per completed learner.
+$existingcredentials = $DB->get_records(
+    'local_edc_exporter_cred',
+    ['courseid' => $courseid],
+    '',
+    'userid, status, export_json_path'
+);
+
 $pendingcount = 0;
 foreach ($completedusers as $completeduser) {
-    $existing = $DB->get_record('local_edc_exporter_cred', [
-        'userid' => $completeduser->userid,
-        'courseid' => $courseid,
-    ]);
+    $existing = $existingcredentials[$completeduser->userid] ?? null;
 
     if ($existing && $existing->status === output_helper::STATUS_REVOKED) {
         continue;

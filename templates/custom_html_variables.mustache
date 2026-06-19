@@ -1,0 +1,26 @@
+{{!
+    @template local_edc_exporter/custom_html_variables
+
+    Reference table for placeholders supported by custom credential HTML.
+}}
+<div class="edc-admin-card">
+    <h3>{{heading}}</h3>
+    <p>{{description}}</p>
+    <table class="generaltable">
+        <thead>
+            <tr>
+                <th>{{variableheading}}</th>
+                <th>{{dataheading}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#variables}}
+                <tr>
+                    <td><code>{{placeholder}}</code></td>
+                    <td>{{description}}</td>
+                </tr>
+            {{/variables}}
+        </tbody>
+    </table>
+    <div class="edc-settings-warning">{{warning}}</div>
+</div>

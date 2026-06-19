@@ -101,22 +101,13 @@ if ($hassiteconfig) {
 
     $setupurl = \local_edc_exporter\local\ui\output_helper::setup_url();
 
-    $guidehtml = '
-<div class="edc-admin-panel">
-    ' . \local_edc_exporter\local\ui\output_helper::nav('settings') . '
-    <div class="edc-admin-panel-header">
-        <div>
-            <h3>' . get_string('settingsintroheading', 'local_edc_exporter') . '</h3>
-            <p>' . get_string('settingsintrodesc', 'local_edc_exporter') . '</p>
-        </div>
-
-        <div class="edc-admin-actions">
-            <a class="edc-btn edc-btn-primary" href="' . $setupurl->out(false) . '">
-                ' . get_string('opensetupassistant', 'local_edc_exporter') . '
-            </a>
-        </div>
-    </div>
-</div>';
+    $guidehtml = $OUTPUT->render_from_template('local_edc_exporter/settings_intro', [
+        'navigation' => \local_edc_exporter\local\ui\output_helper::nav('settings'),
+        'heading' => get_string('settingsintroheading', 'local_edc_exporter'),
+        'description' => get_string('settingsintrodesc', 'local_edc_exporter'),
+        'setupurl' => $setupurl->out(false),
+        'setuplabel' => get_string('opensetupassistant', 'local_edc_exporter'),
+    ]);
 
     $settings->add(new local_edc_exporter_admin_setting_html(
         'local_edc_exporter/setupguide',
@@ -282,121 +273,39 @@ if ($hassiteconfig) {
     // Dynamic visibility for the design settings.
     // Template builder shows only guided options.
     // Custom HTML shows only the HTML field.
-    $PAGE->requires->js_init_code("
-    require(['jquery'], function($) {
-        var modefield = $('[name=\"s_local_edc_exporter_display_mode\"]');
-        var htmlfield = $('[name=\"s_local_edc_exporter_display_custom_html\"]');
-
-        var templatefields = [
-            '[name=\"s_local_edc_exporter_display_template_header\"]',
-            '[name=\"s_local_edc_exporter_display_template_footer\"]',
-            '[name=\"s_local_edc_exporter_display_template_background\"]',
-        ];
-
-        var custombackgroundfield = $('[name=\"s_local_edc_exporter_display_template_background_customcolor\"]');
-
-        function getSettingRow(field) {
-            return field.closest('.form-item, .form-group, .mb-3, .admin_setting');
-        }
-
-        function refreshDisplayFields() {
-            var mode = modefield.val();
-
-            $.each(templatefields, function(index, selector) {
-                var row = getSettingRow($(selector));
-                if (mode === 'template_builder') {
-                    row.show();
-                } else {
-                    row.hide();
-                }
-            });
-
-            var custombackgroundrow = getSettingRow(custombackgroundfield);
-
-        var backgroundField = $('[name=\"s_local_edc_exporter_display_template_background\"]');
-        if (mode === 'template_builder' && backgroundField.val() === 'customcolor') {
-                custombackgroundrow.show();
-            } else {
-                custombackgroundrow.hide();
-            }
-
-            var htmlrow = getSettingRow(htmlfield);
-            if (mode === 'custom_html') {
-                htmlrow.show();
-            } else {
-                htmlrow.hide();
-            }
-        }
-
-        modefield.on('change', refreshDisplayFields);
-        $('[name=\"s_local_edc_exporter_display_template_background\"]').on('change', refreshDisplayFields);
-        refreshDisplayFields();
-    });
-    ");
+    $PAGE->requires->js_call_amd('local_edc_exporter/display_settings', 'init');
 
     // Guide to the variables available for the custom HTML template.
     // This section is informational only and does not store configuration.
-    $customhtmlvariableshtml = '
-    <div class="edc-admin-card">
-        <h3>' . get_string('customhtmlvariablesheading', 'local_edc_exporter') . '</h3>
-
-        <p>' . get_string('customhtmlvariables_desc', 'local_edc_exporter') . '</p>
-
-        <table class="generaltable">
-            <thead>
-                <tr>
-                    <th>' . get_string('customhtmlvariables_variable', 'local_edc_exporter') . '</th>
-                    <th>' . get_string('customhtmlvariables_displayeddata', 'local_edc_exporter') . '</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><code>{{learner_name}}</code></td>
-                    <td>' . get_string('customhtmlvariables_learnername', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{course_name}}</code></td>
-                    <td>' . get_string('customhtmlvariables_coursename', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{credential_title}}</code></td>
-                    <td>' . get_string('customhtmlvariables_credentialtitle', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{issuer_name}}</code></td>
-                    <td>' . get_string('customhtmlvariables_issuername', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{issue_date}}</code></td>
-                    <td>' . get_string('customhtmlvariables_issuedate', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{eqf_level}}</code></td>
-                    <td>' . get_string('customhtmlvariables_eqflevel', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{workload}}</code></td>
-                    <td>' . get_string('customhtmlvariables_workload', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{learning_outcomes}}</code></td>
-                    <td>' . get_string('customhtmlvariables_learningoutcomes', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{verification_url}}</code></td>
-                    <td>' . get_string('customhtmlvariables_verificationurl', 'local_edc_exporter') . '</td>
-                </tr>
-                <tr>
-                    <td><code>{{issuer_logo}}</code></td>
-                    <td>' . get_string('customhtmlvariables_issuerlogo', 'local_edc_exporter') . '</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="edc-settings-warning">
-            ' . get_string('customhtmlvariables_warning', 'local_edc_exporter') . '
-        </div>
-    </div>';
+    $customhtmlvariableshtml = $OUTPUT->render_from_template('local_edc_exporter/custom_html_variables', [
+        'heading' => get_string('customhtmlvariablesheading', 'local_edc_exporter'),
+        'description' => get_string('customhtmlvariables_desc', 'local_edc_exporter'),
+        'variableheading' => get_string('customhtmlvariables_variable', 'local_edc_exporter'),
+        'dataheading' => get_string('customhtmlvariables_displayeddata', 'local_edc_exporter'),
+        'variables' => [
+            ['placeholder' => '{{learner_name}}',
+                'description' => get_string('customhtmlvariables_learnername', 'local_edc_exporter')],
+            ['placeholder' => '{{course_name}}',
+                'description' => get_string('customhtmlvariables_coursename', 'local_edc_exporter')],
+            ['placeholder' => '{{credential_title}}',
+                'description' => get_string('customhtmlvariables_credentialtitle', 'local_edc_exporter')],
+            ['placeholder' => '{{issuer_name}}',
+                'description' => get_string('customhtmlvariables_issuername', 'local_edc_exporter')],
+            ['placeholder' => '{{issue_date}}',
+                'description' => get_string('customhtmlvariables_issuedate', 'local_edc_exporter')],
+            ['placeholder' => '{{eqf_level}}',
+                'description' => get_string('customhtmlvariables_eqflevel', 'local_edc_exporter')],
+            ['placeholder' => '{{workload}}',
+                'description' => get_string('customhtmlvariables_workload', 'local_edc_exporter')],
+            ['placeholder' => '{{learning_outcomes}}',
+                'description' => get_string('customhtmlvariables_learningoutcomes', 'local_edc_exporter')],
+            ['placeholder' => '{{verification_url}}',
+                'description' => get_string('customhtmlvariables_verificationurl', 'local_edc_exporter')],
+            ['placeholder' => '{{issuer_logo}}',
+                'description' => get_string('customhtmlvariables_issuerlogo', 'local_edc_exporter')],
+        ],
+        'warning' => get_string('customhtmlvariables_warning', 'local_edc_exporter'),
+    ]);
 
     $settings->add(new local_edc_exporter_admin_setting_html(
         'local_edc_exporter/customhtmlvariablesguide',
