@@ -285,7 +285,7 @@ class jsonld_builder {
         // If one Moodle name part is missing, derive it from the best available full name.
         // This keeps fullName, givenName and familyName populated for stricter viewers.
         $parts = preg_split('/\s+/', $fullname) ?: [];
-        $parts = array_values(array_filter($parts, static function($part): bool {
+        $parts = array_values(array_filter($parts, static function ($part): bool {
             return trim((string) $part) !== '';
         }));
 
